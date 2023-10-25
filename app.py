@@ -50,12 +50,25 @@ def index():
 @app.route('/query', methods=['POST'])
 def query():
     user_query = request.form.get('query')
-    ranking_prompt = " go thoroughly through the document you're trained on and rank by rating in descending order and dont show their phone number. Make sure you dont mention that you have omitted their phone number. "
+    
+    # Extract the selected LLM model from the form data
+    selected_model = request.form.get('model')
+    
+    # Print a message indicating the selected model
+    print(f"Model selected is: {selected_model}")
+
+    # Set the selected LLM model as the model_name
+    model_name = selected_model
+
+    ranking_prompt = " go thoroughly through the document you're trained on and rank by rating in descending order and don't show their phone number. Make sure you don't mention that you have omitted their phone number. "
     user_query_with_ranking = user_query + ranking_prompt
     matching_docs = db.similarity_search(user_query_with_ranking)
     answer = chain.run(input_documents=matching_docs, question=user_query_with_ranking)
     processed_answer = process_answer(answer)
-    return render_template('result.html', answer=processed_answer)
+
+    # Pass selected_model as a template variable
+    return render_template('result.html', answer=processed_answer, selected_model=selected_model)
+
 
 def process_answer(answer):
     lines = answer.split('\n')

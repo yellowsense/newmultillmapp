@@ -28,8 +28,8 @@
             height: 100vh; 
         }
         .loader { 
-            border: 8px solid #f3f3f3; /* Light grey */ 
-            border-top: 8px solid #FFA500; /* Orange */ 
+            border: 8px solid #f3f3f3; 
+            border-top: 8px solid #FFA500; 
             border-radius: 50%; 
             width: 60px; 
             height: 60px; 
@@ -41,15 +41,15 @@
             100% { transform: rotate(360deg); } 
         }
         #queryInput { 
-            width: 60%; /* Adjust the width as needed */
+            width: 60%;
             padding: 10px; 
             border: 1px solid #ccc; 
             border-radius: 5px; 
             margin-top: 10px; 
         }
         #submitQuery, #refreshButton { 
-            background-color: #FFD700; /* Gold */ 
-            color: #fff; /* White */ 
+            background-color: #FFD700; 
+            color: #fff; 
             border: none; 
             padding: 10px 20px; 
             cursor: pointer; 
@@ -57,9 +57,8 @@
             margin-top: 10px; 
         }
         #submitQuery:hover, #refreshButton:hover { 
-            background-color: #FFA500; /* Orange */ 
+            background-color: #FFA500; 
         }
-        /* Remove bullets from the list */
         ul {
             list-style-type: none;
             padding: 0;
@@ -67,37 +66,61 @@
     </style>
 </head>
 <body>
-    <h1>Maid Recommendation Chat</h1>
-    <p>Welcome to the YellowSense Maid Recommendation Chat Interface! Ask any questions about our maids.</p>
+    <h1>YellowSense Recommendation Chat</h1>
+    <p>Welcome to the YellowSense Maid Recommendation Chat Interface! Ask any questions about our maids/cooks/nannies.</p>
+    <p>Important Information while framing your query:</p>
+    <ul>
+        <li>The societies supported by us at present are Arvind Sporcia, RPH, PFR.</li>
+        <li>We offer the following services: cooks, maids, and nannies.</li>
+        <li>The languages spoken by our household help are: Hindi, Kannada, Tamil, Telugu.</li>
+        <li>There is a rating system for our nannies from 0 to 5.</li>
+        <li>We automatically rank maids based on rating</li>
+    </ul>
+    
     <form id="queryForm" action="/query" method="post">
+        <div id="modelSelect">
+            <p>Select your LLM model:</p>
+            <select name="model" id="modelSelectDropdown">
+                <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
+                <option value="gpt-3.5-turbo-16k">gpt-3.5-turbo-16k</option>
+                <option value="gpt-3.5-turbo-instruct">gpt-3.5-turbo-instruct</option>
+                <option value="gpt-3.5-turbo-0613">gpt-3.5-turbo-0613</option>
+                <option value="gpt-3.5-turbo-16k-0613">gpt-3.5-turbo-16k-0613</option>
+                <option value="gpt-3.5-turbo-0301">gpt-3.5-turbo-0301 (Legacy)</option>
+                <option value="text-davinci-003">text-davinci-003 (Legacy)</option>
+                <option value="text-davinci-002">text-davinci-002 (Legacy)</option>
+                <option value="code-davinci-002">code-davinci-002 (Legacy)</option>
+                <option value="babbage-002">babbage-002</option>
+                <option value="davinci-002">davinci-002</option>
+                <option value="text-curie-001">text-curie-001</option>
+                <option value="text-babbage-001">text-babbage-001</option>
+                <option value="text-ada-001">text-ada-001</option>
+                <option value="davinci">davinci</option>
+                <option value="curie">curie</option>
+                <option value="babbage">babbage</option>
+                <option value="ada">ada</option>
+            </select>
+        </div>
         <input type="text" id="queryInput" name="query" placeholder="Enter your query" required>
         <input type="submit" id="submitQuery" value="Submit">
-        <!-- Loading spinner element -->
         <div id="loadingSpinnerContainer">
             <div class="loader"></div>
             <p>Loading...</p>
         </div>
     </form>
+    
     <p>Example Queries:</p>
     <ul>
-        <li>Recommend me Hindi speaking maids from XYZ society</li>
-        <li>Recommend me Telugu speaking nannies from ABC society</li>
+        <li>Recommend me Hindi speaking cooks from Arvind Sporica</li>
+        <li>Recommend me female Telugu-speaking nannies from PFR</li>
     </ul>
+    
     <button id="refreshButton" onclick="refreshPage()">Refresh Page</button>
     <script>
         function refreshPage() { location.reload(); }
-
+    
         document.getElementById('queryForm').addEventListener('submit', function () {
             document.getElementById('loadingSpinnerContainer').style.display = 'flex';
-        });
-
-        window.addEventListener('message', function (event) {
-            if (event.data && event.data.answer) {
-                document.getElementById('loadingSpinnerContainer').innerText = "Here's your answer";
-                setTimeout(function () {
-                    document.getElementById('loadingSpinnerContainer').style.display = 'none';
-                }, 2000);
-            }
         });
     </script>
 </body>

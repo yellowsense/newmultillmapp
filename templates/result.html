@@ -51,6 +51,7 @@
 </head>
 <body>
     <h1>Maid Recommendation Chat - Result</h1>
+    <p>LLM Model selected is {{ selected_model }}:</p>
     {{ answer|safe }}
     <!-- Refresh button to go back to the original page -->
     <button id="refreshButton" onclick="refreshPage()">Refresh Page</button>
