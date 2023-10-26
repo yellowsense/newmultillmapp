@@ -47,6 +47,9 @@ chain = load_qa_chain(llm, chain_type="stuff", verbose=True)
 def index():
     return render_template('index.html')
 
+from flask import Flask, render_template, request
+
+
 @app.route('/query', methods=['POST'])
 def query():
     user_query = request.form.get('query')
@@ -60,6 +63,12 @@ def query():
     # Set the selected LLM model as the model_name
     model_name = selected_model
 
+    # Initialize the LLM model based on the selected model
+    if model_name in ["gpt-3.5-turbo", "gpt-3.5-turbo-0613", "gpt-3.5-turbo-16k", "gpt-3.5-turbo-16k-0613"]:
+        from langchain.chat_models import ChatOpenAI
+        llm = ChatOpenAI(model_name=model_name)
+
+    # The rest of your code to process the query with the selected model
     ranking_prompt = " go thoroughly through the document you're trained on and rank by rating in descending order and don't show their phone number. Make sure you don't mention that you have omitted their phone number. "
     user_query_with_ranking = user_query + ranking_prompt
     matching_docs = db.similarity_search(user_query_with_ranking)
@@ -68,6 +77,9 @@ def query():
 
     # Pass selected_model as a template variable
     return render_template('result.html', answer=processed_answer, selected_model=selected_model)
+
+
+
 
 
 def process_answer(answer):
