@@ -38,8 +38,6 @@ db = Chroma.from_documents(docs, embeddings)
 
 os.environ["OPENAI_API_KEY"] = oak
 
-model_name = "gpt-3.5-turbo"
-llm = ChatOpenAI(model_name=model_name)
 
 chain = load_qa_chain(llm, chain_type="stuff", verbose=True)
 
